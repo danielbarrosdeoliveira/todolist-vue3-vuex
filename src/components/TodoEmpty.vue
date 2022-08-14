@@ -1,6 +1,6 @@
 <template>
   <div class="text-center text-lg text-gray-500">
-    Você ainda não tem nenhuma tarefa.
+    Você não tem tarefas nesse momento =)
   </div>
 </template>
 

@@ -4,8 +4,8 @@
       <TodoLoading v-if="isLoading" />
       <template v-else>
         <TodoForm />
-        <TodoItems :todos="allTodos" />
-        <TodoEmpty />
+        <TodoItems :todos="allTodos" v-if="allTodos.length" />
+        <TodoEmpty v-else />
       </template>
     </div>
   </div>

@@ -26,6 +26,12 @@ export default createStore({
         state.todos.unshift(payload);
       }
     },
+    DELETE_TODO(state, id) {
+      const index = state.todos.findIndex((todo) => todo.id === id);
+      if (index >= 0) {
+        state.todos.splice(index, 1);
+      }
+    },
     SET_LOADING(state, payload) {
       state.loading = payload;
     }
@@ -55,6 +61,10 @@ export default createStore({
     async updateTodo({ commit }, payload) {
       const { data } = await http.put(`todos/${payload.id}`, payload.data);
       commit('SET_TODO', data);
+    },
+    async deleteTodo({ commit }, id) {
+      await http.delete(`todos/${id}`);
+      commit('DELETE_TODO', id);
     }
   },
 
