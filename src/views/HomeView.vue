@@ -1,10 +1,12 @@
 <template>
   <div class="px-3 py-10 md:px-10">
     <div class="w-full sm:w-1/2 lg:w-1/3 mx-auto">
-      <TodoLoading />
-      <TodoForm />
-      <TodoItems />
-      <TodoEmpty />
+      <TodoLoading v-if="isLoading" />
+      <template v-else>
+        <TodoForm />
+        <TodoItems :todos="allTodos" />
+        <TodoEmpty />
+      </template>
     </div>
   </div>
 </template>
@@ -17,6 +19,17 @@ import TodoEmpty from '@/components/TodoEmpty.vue';
 
 export default {
   name: 'HomeView',
-  components: { TodoLoading, TodoForm, TodoItems, TodoEmpty }
+  components: { TodoLoading, TodoForm, TodoItems, TodoEmpty },
+  created() {
+    this.$store.dispatch('getTodos');
+  },
+  computed: {
+    allTodos() {
+      return this.$store.getters.$getTodos;
+    },
+    isLoading() {
+      return this.$store.getters.$getLoading;
+    }
+  }
 };
 </script>

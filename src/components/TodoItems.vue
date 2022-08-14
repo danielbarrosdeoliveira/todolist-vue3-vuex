@@ -1,9 +1,6 @@
 <template>
   <div class="space-y-2">
-    <TodoItem />
-    <TodoItem />
-    <TodoItem />
-    <TodoItem />
+    <TodoItem v-for="todo in todos" :key="todo.id" :todo="todo" />
   </div>
 </template>
 
@@ -12,6 +9,12 @@ import TodoItem from './TodoItem.vue';
 
 export default {
   name: 'TodoItems',
-  components: { TodoItem }
+  components: { TodoItem },
+  props: {
+    todos: {
+      type: Object,
+      default: () => {}
+    }
+  }
 };
 </script>
