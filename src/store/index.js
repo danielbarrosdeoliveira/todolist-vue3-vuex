@@ -19,7 +19,12 @@ export default createStore({
       state.todos = payload;
     },
     SET_TODO(state, payload) {
-      state.todos.unshift(payload);
+      const index = state.todos.findIndex((todo) => todo.id === payload.id);
+      if (index >= 0) {
+        state.todos.splice(index, 1, payload);
+      } else {
+        state.todos.unshift(payload);
+      }
     },
     SET_LOADING(state, payload) {
       state.loading = payload;
@@ -40,11 +45,15 @@ export default createStore({
       } finally {
         setTimeout(() => {
           dispatch('updateLoading', false);
-        }, 3000);
+        }, 500);
       }
     },
     async addTodo({ commit }, payload) {
       const { data } = await http.post('todos', payload);
+      commit('SET_TODO', data);
+    },
+    async updateTodo({ commit }, payload) {
+      const { data } = await http.put(`todos/${payload.id}`, payload.data);
       commit('SET_TODO', data);
     }
   },
