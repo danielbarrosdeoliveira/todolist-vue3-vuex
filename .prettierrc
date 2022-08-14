@@ -1,6 +1,10 @@
 {
   "arrowParens": "always",
-  "endOfLine": "lf",
   "singleQuote": true,
-  "trailingComma": "none"
+  "trailingComma": "none",
+  "semi": true,
+  "bracketSpacing": true,
+  "quoteProps": "as-needed",
+  "tabWidth": 2,
+  "endOfLine": "lf"
 }
