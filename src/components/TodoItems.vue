@@ -14,7 +14,6 @@ export default {
   components: { TodoItem },
   setup(props) {
     const allTodos = ref(props.todos);
-
     return {
       allTodos
     };
