@@ -18,11 +18,17 @@ export default createStore({
     SET_TODOS(state, payload) {
       state.todos = payload;
     },
+    SET_TODO(state, payload) {
+      state.todos.unshift(payload);
+    },
     SET_LOADING(state, payload) {
       state.loading = payload;
     }
   },
   actions: {
+    updateLoading({ commit }, payload) {
+      commit('SET_LOADING', payload);
+    },
     async getTodos({ commit, dispatch }) {
       dispatch('updateLoading', true);
       try {
@@ -37,9 +43,11 @@ export default createStore({
         }, 3000);
       }
     },
-    updateLoading({ commit }, payload) {
-      commit('SET_LOADING', payload);
+    async addTodo({ commit }, payload) {
+      const { data } = await http.post('todos', payload);
+      commit('SET_TODO', data);
     }
   },
+
   modules: {}
 });
