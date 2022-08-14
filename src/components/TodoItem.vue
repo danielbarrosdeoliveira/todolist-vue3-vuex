@@ -6,7 +6,7 @@
       <div class="flex items-center justify-center mr-2">
         <button
           :class="[`${isCompleted ? 'text-green-500' : 'text-gray-500'} `]"
-          @click="onChangeCheckTodo"
+          @click="onChangeCompletedTodo"
         >
           <svg
             class="w-5 h-5"
@@ -61,45 +61,52 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+
 export default {
   name: 'TodoItem',
-  data: function () {
-    return {
-      title: this.todo.title,
-      isCompleted: this.todo.completed
+  props: ['todo'],
+  setup(props) {
+    let title = ref(props.todo.title);
+    let isCompleted = ref(props.todo.completed);
+    const store = useStore();
+
+    const updateTodo = () => {
+      const payload = {
+        id: props.todo.id,
+        data: {
+          title: title.value,
+          completed: isCompleted.value
+        }
+      };
+      store.dispatch('updateTodo', payload);
     };
-  },
-  props: {
-    todo: {
-      type: Object,
-      default: () => {}
-    }
-  },
-  methods: {
-    onChangeTitleTodo() {
-      if (!this.title) {
+
+    const onChangeTitleTodo = () => {
+      if (!title.value) {
         return;
       }
 
-      this.updateTodo();
-    },
-    updateTodo() {
-      const payload = {
-        id: this.todo.id,
-        data: {
-          title: this.title,
-          completed: this.isCompleted
-        }
-      };
-      this.$store.dispatch('updateTodo', payload);
-    },
-    onChangeCheckTodo() {
-      this.isCompleted = !this.isCompleted;
-      this.updateTodo();
-    },
-    onDeleteTodo() {
-      this.$store.dispatch('deleteTodo', this.todo.id);
-    }
+      updateTodo();
+    };
+
+    const onChangeCompletedTodo = () => {
+      isCompleted.value = !isCompleted.value;
+      updateTodo();
+    };
+
+    const onDeleteTodo = () => {
+      store.dispatch('deleteTodo', props.todo.id);
+    };
+
+    return {
+      title,
+      isCompleted,
+      onChangeTitleTodo,
+      onChangeCompletedTodo,
+      onDeleteTodo
+    };
   }
 };
 </script>
